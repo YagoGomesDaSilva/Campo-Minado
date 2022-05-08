@@ -27,9 +27,18 @@ int main(int argc, char* argv[]) {
 	
 	game.game_on = true;
 	do {
+
+		
+		for (int i = 1; i < SIZE_1 + 1 ; i++) {
+			for (int j = 1; j < SIZE_1 + 1; j++) {
+				cout << matrizR[i][j] << " ";
+			}
+			cout << endl;
+		}
+		
 		
 		gerar_campo(matrizR, SIZE_1, SIZE_1, ponto);
-
+		
 		game.comando = true;
 		while (game.comando) {
 
@@ -40,7 +49,7 @@ int main(int argc, char* argv[]) {
 			game.game_on = false;
 		}
 
-		system("cls");
+		printf("\033c");
 	}while (game.game_on);
 	
 	return 0;
