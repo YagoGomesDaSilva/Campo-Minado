@@ -2,8 +2,9 @@
 
 #define FUNCTION_H
 
-#include<iostream>
+#include <iostream>
 #include <string>
+#include <Windows.h>
 
 #include <array>
 using std::array;
@@ -24,6 +25,8 @@ const int SIZE_3C = 30;
 const int BOMBA_3 = 100;
 
 const int BORDA = NULL;
+const int AUX_Z_I = 1000;
+const int BANDEIRA = 500;
 
 struct Ponto
 {
@@ -32,13 +35,14 @@ struct Ponto
 
 struct Chave
 {
-	bool game_on = NULL, comando = NULL, bandeira = NULL;
+	bool game_on = NULL, comando = NULL, win = NULL;
+	int cont = NULL;
 };
 
 template<std::size_t SIZE>
-void gerar_matriz(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C) {
+void gerar_matriz(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Chave& game) {
 
-	for (int i = 0; i < SIZE_L; i++) {
+	for (int i = 0; i < SIZE_L ; i++) {
 		for (int j = 0; j < SIZE_C; j++) {
 
 			if (i == 0 || j == 0) {
@@ -46,6 +50,7 @@ void gerar_matriz(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const i
 			}
 			else {
 				arr[i][j] = 0;
+				
 			}
 
 		}
@@ -56,13 +61,22 @@ void gerar_matriz(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const i
 template<std::size_t SIZE>
 void gerar_bombas(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, const int BOMBA) {
 	//geracao aleatoria das bombas
+
 	srand((unsigned)time(NULL));
 	Ponto ponto;
+
 	for (int i = 1; i < BOMBA + 1; i++) {
 		do {
 
 			ponto.pxB = rand() % SIZE_L;
 			ponto.pyB = rand() % SIZE_C;
+
+			if(ponto.pxB == 0){
+				ponto.pxB++;
+			}
+			if(ponto.pyB==0){
+				ponto.pyB++;
+			}
 
 		} while (arr[ponto.pxB][ponto.pyB] == -1);
 
@@ -102,142 +116,194 @@ void indice_bombas(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const 
 
 }
 template<std::size_t SIZE>
-void revelar_zeros(array <array<int, SIZE>, SIZE>&arr, const int SIZE_L, const int SIZE_C, int x, int y) {
+void revelar_zeros(array <array<int, SIZE>, SIZE>&arr, const int SIZE_L, const int SIZE_C, int x, int y, Chave& game) {
 
 	if (!(x<0 || x > SIZE_L || y<0 || y > SIZE_C || x == 0 || y == 0)) {
 
 		if (arr[x][y] == 0) {
 
-			arr[x][y] = 2000;
+			arr[x][y] = AUX_Z_I;
 
-			revelar_zeros(arr, SIZE_L, SIZE_C, x, y - 1);//esquerda
-			revelar_zeros(arr, SIZE_L, SIZE_C, x, y + 1);//direita
-			revelar_zeros(arr, SIZE_L, SIZE_C, x + 1, y);//baixo
-			revelar_zeros(arr, SIZE_L, SIZE_C, x - 1, y);//cima
+			revelar_zeros(arr, SIZE_L, SIZE_C, x, y - 1, game);//esquerda
+			revelar_zeros(arr, SIZE_L, SIZE_C, x, y + 1, game);//direita
+			revelar_zeros(arr, SIZE_L, SIZE_C, x + 1, y, game);//baixo
+			revelar_zeros(arr, SIZE_L, SIZE_C, x - 1, y, game);//cima
 
 
-			revelar_zeros(arr, SIZE_L, SIZE_C, x - 1, y - 1);//diagonal superior esquerda
-			revelar_zeros(arr, SIZE_L, SIZE_C, x + 1, y + 1);// diagonal inferior dierita
+			revelar_zeros(arr, SIZE_L, SIZE_C, x - 1, y - 1, game);//diagonal superior esquerda
+			revelar_zeros(arr, SIZE_L, SIZE_C, x + 1, y + 1, game);// diagonal inferior dierita
 
-			revelar_zeros(arr, SIZE_L, SIZE_C, x + 1, y - 1);//diagonal inferior esquerda
-			revelar_zeros(arr, SIZE_L, SIZE_C, x - 1, y + 1);//diagonal superior direita
+			revelar_zeros(arr, SIZE_L, SIZE_C, x + 1, y - 1, game);//diagonal inferior esquerda
+			revelar_zeros(arr, SIZE_L, SIZE_C, x - 1, y + 1, game);//diagonal superior direita
 			
 		}
 		else if (arr[x][y] >= 1 && arr[x][y] <= 5) {
-			arr[x][y] = arr[x][y] + 1000;
+			arr[x][y] = arr[x][y] + AUX_Z_I;
 		}
 	}
 }
 
 template<std::size_t SIZE>
-bool acoes_usuario(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto, Chave& game) {
+void revelar_entorno(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto, Chave& game) {
 
-	cout << endl;
-	cout << "Digite o numero da linha: ";
-	cin >> ponto.pxU;
-	cout << "Digite o numero da coluna: ";
-	cin >> ponto.pyU;
+	for (int l = -1; l < 2; l++) {
+		for (int c = -1; c < 2; c++) {
 
-	if (ponto.pxU<0 || ponto.pxU > SIZE_L || ponto.pyU<0 || ponto.pyU > SIZE_C || ponto.pxU == 0 || ponto.pyU == 0) {
-		cout << endl;
-		cout << "Jogada invalida! ";
+			if (ponto.pxU + l > SIZE_L - 1 || ponto.pxU + l < 0 || ponto.pyU + c > SIZE_C - 1 || ponto.pyU + c < 0) {//se ultrapassar o limite
+				continue;
+			}
+
+			else if (arr[ponto.pxU + l][ponto.pyU + c] >= AUX_Z_I && arr[ponto.pxU + l][ponto.pyU + c] <= AUX_Z_I + 5) { //se o local ja foi revelado 
+				continue;
+			}
+
+			else if (arr[ponto.pxU + l][ponto.pyU + c] >= BANDEIRA + 1 && arr[ponto.pxU + l][ponto.pyU + c] <= BANDEIRA + 5) { // se tiver bandeira no local de indice 
+				continue;
+			}
+
+			else if (arr[ponto.pxU + l][ponto.pyU + c] <= (-10)) { // se tiver bandeira no local da bomba 
+				continue;
+			}
+
+			else if (arr[ponto.pxU + l][ponto.pyU + c] == 0) { //se revelar um 0
+				arr[ponto.pxU + l][ponto.pyU + c] = arr[ponto.pxU + l][ponto.pyU + c] + AUX_Z_I;
+			}
+
+			else if (arr[ponto.pxU + l][ponto.pyU + c] >= 1 && arr[ponto.pxU + l][ponto.pyU + c] <= 5) { //se revelar um indice
+				arr[ponto.pxU + l][ponto.pyU + c] = arr[ponto.pxU + l][ponto.pyU + c] + AUX_Z_I;
+			}
+
+			else if (arr[ponto.pxU + l][ponto.pyU + c] = (-1)) { //se revelar uma bomba
+				arr[ponto.pxU][ponto.pyU] = (-1);
+			}
+
+		}
 	}
-	else {
 
-		game.bandeira = true;
+}
+
+template<std::size_t SIZE>
+bool revelar_unidade(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto, Chave& game) {
+	do {
+	
 		cout << endl;
-		cout << "Posicionar ou remover bandeira ? ( SIM = 1 // NAO = Qualquer numero )";
-		cin >> ponto.aux;
-		if (ponto.aux == 1) {
+		cout << "Digite o numero da linha: ";
+		cin >> ponto.pxU;
+		cout << "Digite o numero da coluna: ";
+		cin >> ponto.pyU;
 
-			do {
-
-				if ((arr[ponto.pxU][ponto.pyU] == 2000)||((arr[ponto.pxU][ponto.pyU] > 1000 && arr[ponto.pxU][ponto.pyU] <= 1000 + 5))) {
-					cout << endl;
-					cout << "Jogada invalida! ";
-					game.bandeira = false;
-				}
-				else {
-
-					do {
-						cout << endl;
-						cout << "Remover bandeira = 0 // Posicionar bandeira = 1 ?";
-						cin >> ponto.aux;
-
-						if (ponto.aux != 0 || ponto.aux != 1) {
-							cout << endl;
-							cout << "Jogada invalida! ";
-							game.bandeira = false;
-						}
-						else {
-
-							if (ponto.aux = 1) {
-
-								if ( (arr[ponto.pxU][ponto.pyU] > 1000 + 500 && arr[ponto.pxU][ponto.pyU] <= 1000 + 505 )||( arr[ponto.pxU][ponto.pyU] < (-10)) ){
-									cout << endl;
-									cout << "Posicionamento invalido! ";
-								}
-								else {
-
-									if (arr[ponto.pxU][ponto.pyU] == -1) {
-										arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + (-10);
-									}
-									else if (arr[ponto.pxU][ponto.pyU] >= 1 && arr[ponto.pxU][ponto.pyU] <= 5) {
-										arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + 1000 + 500;
-									}
-									else if (arr[ponto.pxU][ponto.pyU] == 0) {
-										arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + 500;
-									}
-								}
-
-							}
-							else {
-
-								if ( (arr[ponto.pxU][ponto.pyU] > 1000 && arr[ponto.pxU][ponto.pyU] <= 1000 + 5) || (arr[ponto.pxU][ponto.pyU] < - 1) ) {
-										cout << endl;
-										cout << "Remoção invalida! ";
-								}
-
-								else {
-
-									if (arr[ponto.pxU][ponto.pyU] == -1) {
-										arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + (+10);
-									}
-									else if (arr[ponto.pxU][ponto.pyU] >= 1 && arr[ponto.pxU][ponto.pyU] <= 5) {
-										arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] - 1000 - 500;
-									}
-									else if (arr[ponto.pxU][ponto.pyU] == 500) {
-										arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] - 500;
-									}
-								}
-
-
-							}
-
-
-						}
-
-					} while (game.bandeira);
-
-				}
-			
-			} while (game.bandeira);
-			
+		if (ponto.pxU<0 || ponto.pxU > SIZE_L || ponto.pyU<0 || ponto.pyU > SIZE_C || ponto.pxU == 0 || ponto.pyU == 0) {
+			cout << endl;
+			cout << "Jogada invalida! ";
+			cout << endl;
 		}
 		else {
 
+
 			if (arr[ponto.pxU][ponto.pyU] == 0) {
-				revelar_zeros(arr, SIZE_L, SIZE_C, ponto.pxU, ponto.pyU);
-			}
-			else if (arr[ponto.pxU][ponto.pyU] >= 1 && arr[ponto.pxU][ponto.pyU] <= 5) {
-				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + 1000;
+				revelar_zeros(arr, SIZE_L, SIZE_C, ponto.pxU, ponto.pyU, game);
 			}
 
+			else if (arr[ponto.pxU][ponto.pyU] >= 1 && arr[ponto.pxU][ponto.pyU] <= 5) { // se for um indice
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + AUX_Z_I;
+			}
+
+			else if (arr[ponto.pxU][ponto.pyU] >= BANDEIRA + 1 && arr[ponto.pxU][ponto.pyU] <= BANDEIRA + 5) { //bandeira no local dos indices
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + BANDEIRA;
+			}
+
+			else if (arr[ponto.pxU][ponto.pyU] <= (-10)) { //bandeira no local da bomba
+				arr[ponto.pxU][ponto.pyU] = -1;
+			}
+			
+			else if (arr[ponto.pxU][ponto.pyU] >= AUX_Z_I + 1 && arr[ponto.pxU][ponto.pyU] <= AUX_Z_I + 5){//se o local ja foi revelado 				
+				revelar_entorno(arr, SIZE_L, SIZE_C, ponto, game);
+			}
+			
+			return game.comando = false;
 		}
 
-		return game.comando = false;
-	}
+	} while (true);
+}
 
+template<std::size_t SIZE>
+bool manipular_bandeira(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto, Chave& game) {
+	do {
+
+		cout << endl;
+		cout << "Digite o numero da linha: ";
+		cin >> ponto.pxU;
+		cout << "Digite o numero da coluna: ";
+		cin >> ponto.pyU;
+
+		if (ponto.pxU<0 || ponto.pxU > SIZE_L || ponto.pyU<0 || ponto.pyU > SIZE_C || ponto.pxU == 0 || ponto.pyU == 0) {
+			cout << endl;
+			cout << "Jogada invalida! ";
+			cout << endl;
+		}
+		else if (arr[ponto.pxU][ponto.pyU] >= AUX_Z_I) {
+			cout << endl;
+			cout << "Local ja revelado! ";
+			cout << endl;
+		}
+		else if (arr[ponto.pxU][ponto.pyU] == 0) {
+			cout << endl;
+			cout << "Local seguro! ";
+			cout << endl;
+			Sleep(2000);
+			return game.comando = false;
+		}
+		else {
+
+			//POR BANDEIRA
+			if (arr[ponto.pxU][ponto.pyU] >= 1 && arr[ponto.pxU][ponto.pyU] <= 5) {
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + BANDEIRA;
+			}
+			else if (arr[ponto.pxU][ponto.pyU] == (-1)) {
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + (-10);
+				ponto.pxU = NULL;
+				ponto.pyU = NULL;
+			}
+			//RETIRAR BANDEIRA
+			else if (arr[ponto.pxU][ponto.pyU] >= BANDEIRA + 1 && arr[ponto.pxU][ponto.pyU] <= BANDEIRA + 5) {
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] - BANDEIRA;
+			}
+			else if (arr[ponto.pxU][ponto.pyU] < (-10)) {
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + 10;
+				ponto.pxU = NULL;
+				ponto.pyU = NULL;
+			}
+
+			return game.comando = false;
+		}
+
+	} while (true);
+}
+
+template<std::size_t SIZE>
+bool acoes_usuario(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto, Chave& game) {
+
+	do {
+
+		cout << endl;
+		cout << "Escolha uma opcao: "<<endl;
+		cout << "Revelar uninadade = 0 // Manipular bandeira = 1: ";
+		cin >> ponto.aux;
+		if (!(ponto.aux == 0 || ponto.aux == 1)) {
+			cout << endl;
+			cout << "Opcao invalida! ";
+			cout << endl;
+		}
+		else {
+			if(ponto.aux == 0){
+				return revelar_unidade(arr,  SIZE_L, SIZE_C,  ponto,  game);
+			}
+			else if (ponto.aux == 1) {
+				return manipular_bandeira(arr, SIZE_L, SIZE_C, ponto, game);
+			}
+		}
+
+	} while (true);
 }
 
 template<std::size_t SIZE>
@@ -268,30 +334,65 @@ void gerar_campo(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const in
 			if (arr[l][c] == -1) {//escondendo as bombas
 				cout << "X ";
 			}
-			else if ((arr[l][c] > 1000 && arr[l][c] <+ 1000 + 5) && (arr[l][c] < 2000)) {//impressao dos locais de indice das bombas ja escolhidos pelo usuario
-				
-				cout << arr[l][c] % 1000 << " ";
-				
-			}
-			
-			else if ((arr[l][c] > 1000 + 500 && arr[l][c] < +1000 + 500+ 5) && (arr[l][c] < (-10)) ){//impressao dos bandeiras
 
-				cout << "B" << " ";
-				
+			else if (arr[l][c] >= AUX_Z_I + 1 && arr[l][c] <= AUX_Z_I + 5) {//impressao dos locais de indice das bombas ja escolhidos pelo usuario			
+				cout << arr[l][c] % AUX_Z_I << " ";
 			}
 			
-			else if (arr[l][c] == 2000) {//caso seja 0 o local permanece 0
+			else if (arr[l][c] == AUX_Z_I) {//caso seja 0 o local permanece 0
 					cout << "0 ";
+			}
+
+			else if (arr[l][c] >= BANDEIRA + 1 && arr[l][c] <= BANDEIRA + 5) {//bandeira no local dos indices
+				cout << "B ";
+			}
+
+			else if (arr[l][c] < (-10)) {//bandeira no local da bomba
+				cout << "B ";
 			}
 
 			else {
 				cout << "X ";
 			}
-			
 
 		}
 
 		cout << endl;
 	}
 }
+
+
+template<std::size_t SIZE>
+bool condicao_termino(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto, Chave& game, const int BOMBA) {
+
+	game.cont = 0;
+	for (int i = 1; i <= SIZE_L; i++) {
+		for (int j = 1; j <= SIZE_C; j++) {
+
+			if (arr[i][j] == (-10) + (-1)) {
+				game.cont++;
+			}
+			else if (arr[i][j] >= BANDEIRA + 1 && arr[i][j] <= BANDEIRA + 5) {
+				game.cont--;
+			}
+
+		}
+	}
+
+	if (game.cont == BOMBA) {
+		game.game_on = false;
+		return true;
+	}
+
+	else if (arr[ponto.pxU][ponto.pyU] == (-1) || arr[ponto.pxU][ponto.pyU] == (-10) + (-1)) {
+		game.game_on = false;
+		return false;
+	}
+
+	return NULL;
+}
+
+void mensagem_final(Chave& game);
+
+
 #endif

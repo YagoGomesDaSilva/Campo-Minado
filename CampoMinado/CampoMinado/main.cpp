@@ -10,7 +10,9 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-//template<std::size_t SIZE>
+
+
+
 
 int main(int argc, char* argv[]) {
 
@@ -19,7 +21,7 @@ int main(int argc, char* argv[]) {
 
 	array <array<int, SIZE_1 + 1>, SIZE_1 + 1 > matrizR = {};
 
-	gerar_matriz(matrizR,SIZE_1, SIZE_1);
+	gerar_matriz(matrizR,SIZE_1, SIZE_1, game);
 
 	gerar_bombas(matrizR,SIZE_1,SIZE_1,BOMBA_1);
 
@@ -35,7 +37,9 @@ int main(int argc, char* argv[]) {
 			}
 			cout << endl;
 		}
-		
+		cout << endl;
+		cout << game.cont;
+		cout << endl;
 		
 		gerar_campo(matrizR, SIZE_1, SIZE_1, ponto);
 		
@@ -45,12 +49,13 @@ int main(int argc, char* argv[]) {
 			game.comando = acoes_usuario(matrizR, SIZE_1, SIZE_1, ponto , game);
 		}
 		
-		if (matrizR[ponto.pxU][ponto.pyU] == -1) {
-			game.game_on = false;
-		}
-
 		printf("\033c");
+
+		game.win = condicao_termino(matrizR, SIZE_1, SIZE_1, ponto, game, BOMBA_1);
+		
 	}while (game.game_on);
-	
+
+	mensagem_final(game);
+
 	return 0;
 }
