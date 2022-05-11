@@ -145,6 +145,9 @@
   <ItemGroup>
     <ClInclude Include="function.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="dificuldade.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

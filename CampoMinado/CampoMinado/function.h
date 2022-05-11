@@ -27,6 +27,10 @@ const int BOMBA_3 = 100;
 const int BORDA = NULL;
 const int AUX_Z_I = 1000;
 const int BANDEIRA = 500;
+const int BAND_IN_BOMB= -10;
+const int BOMB_IN_GAME = -1;
+
+
 
 struct Ponto
 {
@@ -36,7 +40,7 @@ struct Ponto
 struct Chave
 {
 	bool game_on = NULL, comando = NULL, win = NULL;
-	int cont = NULL;
+	int cont_band = NULL, cont_celula = NULL, cont_revel = NULL;
 };
 
 template<std::size_t SIZE>
@@ -52,7 +56,7 @@ void gerar_matriz(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const i
 				arr[i][j] = 0;
 				
 			}
-
+			game.cont_celula++;
 		}
 	}
 
@@ -65,7 +69,7 @@ void gerar_bombas(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const i
 	srand((unsigned)time(NULL));
 	Ponto ponto;
 
-	for (int i = 1; i < BOMBA + 1; i++) {
+	for (int i = 1; i <= BOMBA; i++) {
 		do {
 
 			ponto.pxB = rand() % SIZE_L;
@@ -78,17 +82,17 @@ void gerar_bombas(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const i
 				ponto.pyB++;
 			}
 
-		} while (arr[ponto.pxB][ponto.pyB] == -1);
+		} while (arr[ponto.pxB][ponto.pyB] == BOMB_IN_GAME);
 
-		arr[ponto.pxB][ponto.pyB] = -1;
+		arr[ponto.pxB][ponto.pyB] = BOMB_IN_GAME;
 	}
 }
 
 template<std::size_t SIZE>
 void indice_bombas(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C) {
 	//numeros ao redor das bombas
-	for (int i = 1; i < SIZE_L + 1; i++) {
-		for (int j = 1; j < SIZE_C + 1; j++) {
+	for (int i = 1; i <= SIZE_L ; i++) {
+		for (int j = 1; j <= SIZE_C ; j++) {
 
 			if (arr[i][j] == -1) {
 
@@ -161,7 +165,7 @@ void revelar_entorno(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, cons
 				continue;
 			}
 
-			else if (arr[ponto.pxU + l][ponto.pyU + c] <= (-10)) { // se tiver bandeira no local da bomba 
+			else if (arr[ponto.pxU + l][ponto.pyU + c] <= (BAND_IN_BOMB)) { // se tiver bandeira no local da bomba 
 				continue;
 			}
 
@@ -173,8 +177,8 @@ void revelar_entorno(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, cons
 				arr[ponto.pxU + l][ponto.pyU + c] = arr[ponto.pxU + l][ponto.pyU + c] + AUX_Z_I;
 			}
 
-			else if (arr[ponto.pxU + l][ponto.pyU + c] = (-1)) { //se revelar uma bomba
-				arr[ponto.pxU][ponto.pyU] = (-1);
+			else if (arr[ponto.pxU + l][ponto.pyU + c] = BOMB_IN_GAME) { //se revelar uma bomba
+				arr[ponto.pxU][ponto.pyU] = BOMB_IN_GAME;
 			}
 
 		}
@@ -212,8 +216,8 @@ bool revelar_unidade(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, cons
 				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + BANDEIRA;
 			}
 
-			else if (arr[ponto.pxU][ponto.pyU] <= (-10)) { //bandeira no local da bomba
-				arr[ponto.pxU][ponto.pyU] = -1;
+			else if (arr[ponto.pxU][ponto.pyU] <= (BAND_IN_BOMB)) { //bandeira no local da bomba
+				arr[ponto.pxU][ponto.pyU] = BOMB_IN_GAME;
 			}
 			
 			else if (arr[ponto.pxU][ponto.pyU] >= AUX_Z_I + 1 && arr[ponto.pxU][ponto.pyU] <= AUX_Z_I + 5){//se o local ja foi revelado 				
@@ -259,8 +263,8 @@ bool manipular_bandeira(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, c
 			if (arr[ponto.pxU][ponto.pyU] >= 1 && arr[ponto.pxU][ponto.pyU] <= 5) {
 				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + BANDEIRA;
 			}
-			else if (arr[ponto.pxU][ponto.pyU] == (-1)) {
-				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + (-10);
+			else if (arr[ponto.pxU][ponto.pyU] == BOMB_IN_GAME) {
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + (BAND_IN_BOMB);
 				ponto.pxU = NULL;
 				ponto.pyU = NULL;
 			}
@@ -268,8 +272,8 @@ bool manipular_bandeira(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, c
 			else if (arr[ponto.pxU][ponto.pyU] >= BANDEIRA + 1 && arr[ponto.pxU][ponto.pyU] <= BANDEIRA + 5) {
 				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] - BANDEIRA;
 			}
-			else if (arr[ponto.pxU][ponto.pyU] < (-10)) {
-				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] + 10;
+			else if (arr[ponto.pxU][ponto.pyU] < (BAND_IN_BOMB)) {
+				arr[ponto.pxU][ponto.pyU] = arr[ponto.pxU][ponto.pyU] - (BAND_IN_BOMB);
 				ponto.pxU = NULL;
 				ponto.pyU = NULL;
 			}
@@ -309,50 +313,61 @@ bool acoes_usuario(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const 
 template<std::size_t SIZE>
 void gerar_campo(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto) {
 	//inicio geracao do campo
-	for (int l = 1; l < SIZE_L + 1; l++) {
+	for (int l = 1; l <= SIZE_L ; l++) {
 
 		if (l == 1) {
-			cout << "   ";
+			cout << "  ";
 
-			for (int num = 1; num < SIZE_L + 1; num++) {//geração dos numeros em cima da matriz
-				cout << num << " ";
+			for (int num = 1; num <= SIZE_C ; num++) {//geração dos numeros em cima da matriz
+				if (num >= 10) {
+					cout << num << " ";
+				}
+				else {
+					cout << " " << num << " ";
+				}
 			}
 			//geraçao  dos numeros à esquerda da matiz
 			cout << endl;
-			cout << " " << l << " ";
+			if (l >= 10) {
+				cout << l << " ";
+			}
+			else {
+				cout << " " << l << " ";
+			}
 		}
 
-		else if (l == 10) {
+		else if (l >= 10) {
 			cout << l << " ";
 		}
 		else {
+
 			cout << " " << l << " ";
 		}
 
-		for (int c = 1; c < SIZE_C + 1; c++) {
+		for (int c = 1; c <= SIZE_C ; c++) {
 
-			if (arr[l][c] == -1) {//escondendo as bombas
-				cout << "X ";
+			if (arr[l][c] == BOMB_IN_GAME) {//escondendo as bombas
+				cout << "X  ";
 			}
 
 			else if (arr[l][c] >= AUX_Z_I + 1 && arr[l][c] <= AUX_Z_I + 5) {//impressao dos locais de indice das bombas ja escolhidos pelo usuario			
-				cout << arr[l][c] % AUX_Z_I << " ";
+				cout << arr[l][c] % AUX_Z_I << "  ";
 			}
 			
 			else if (arr[l][c] == AUX_Z_I) {//caso seja 0 o local permanece 0
-					cout << "0 ";
+					cout << "0  ";
 			}
 
 			else if (arr[l][c] >= BANDEIRA + 1 && arr[l][c] <= BANDEIRA + 5) {//bandeira no local dos indices
-				cout << "B ";
+				cout << "B  ";
 			}
 
-			else if (arr[l][c] < (-10)) {//bandeira no local da bomba
-				cout << "B ";
+			else if (arr[l][c] < (BAND_IN_BOMB)) {//bandeira no local da bomba
+				cout << "B  ";
 			}
 
 			else {
-				cout << "X ";
+				cout << "X  ";
 			}
 
 		}
@@ -365,34 +380,43 @@ void gerar_campo(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const in
 template<std::size_t SIZE>
 bool condicao_termino(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const int SIZE_C, Ponto& ponto, Chave& game, const int BOMBA) {
 
-	game.cont = 0;
+	game.cont_band = 0;
+	game.cont_revel= 0;
 	for (int i = 1; i <= SIZE_L; i++) {
 		for (int j = 1; j <= SIZE_C; j++) {
 
-			if (arr[i][j] == (-10) + (-1)) {
-				game.cont++;
+			if (arr[i][j] >= AUX_Z_I) {
+				game.cont_revel++;
+			}
+
+			if (arr[i][j] == (BAND_IN_BOMB) + (BOMB_IN_GAME)) { // CONTA QUANTAS BANDEIRAS FORAM POSICIONADAS NAS BOMBAS
+				game.cont_band++;
 			}
 			else if (arr[i][j] >= BANDEIRA + 1 && arr[i][j] <= BANDEIRA + 5) {
-				game.cont--;
+				game.cont_band--;
 			}
 
 		}
 	}
 
-	if (game.cont == BOMBA) {
+	if ((game.cont_celula == game.cont_revel + BOMBA) && (game.cont_band == BOMBA)) { // Condicao de vitoria 
 		game.game_on = false;
 		return true;
 	}
 
-	else if (arr[ponto.pxU][ponto.pyU] == (-1) || arr[ponto.pxU][ponto.pyU] == (-10) + (-1)) {
+	else if (arr[ponto.pxU][ponto.pyU] == BOMB_IN_GAME  || arr[ponto.pxU][ponto.pyU] == (BAND_IN_BOMB)+(BOMB_IN_GAME)) { // conticao de derrota 
 		game.game_on = false;
 		return false;
 	}
 
-	return NULL;
 }
 
 void mensagem_final(Chave& game);
 
+bool campo_minado_LV1();
+
+bool campo_minado_LV2();
+
+bool campo_minado_LV3();
 
 #endif
