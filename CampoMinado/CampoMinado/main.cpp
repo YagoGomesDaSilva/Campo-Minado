@@ -1,14 +1,5 @@
-#include<iostream>
-
 #include "function.h"
 #include "dif_rec.h"
-
-using std::string;
-using std::cout;
-using std::cin;
-using std::endl;
-
-
 
 
 int main(int argc, char* argv[]) {

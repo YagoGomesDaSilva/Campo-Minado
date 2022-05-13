@@ -1,14 +1,12 @@
 #ifndef FUNCTION_H
-
 #define FUNCTION_H
 
 #include<iostream>
-#include <cstring>
-#include <fstream>
-#include <string>
 
-#include <chrono>
-using namespace std::chrono;
+using std::string;
+using std::cout;
+using std::cin;
+using std::endl;
 
 #include <Windows.h>
 
@@ -35,7 +33,6 @@ const int AUX_Z_I = 1000;
 const int BANDEIRA = 500;
 const int BAND_IN_BOMB= -10;
 const int BOMB_IN_GAME = -1;
-
 
 
 struct Ponto
@@ -417,7 +414,7 @@ bool condicao_termino(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, con
 
 }
 
-char arc_dificuldade(int& argc, char* argv[]);
+
 
 void mensagem_final(Chave& game);
 
