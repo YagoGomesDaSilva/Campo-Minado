@@ -11,22 +11,21 @@ using std::cin;
 using std::endl;
 
 
-
 int main(int argc, char* argv[]) {
 
-	int aux = 0;
+    char dif = arc_dificuldade(argc, argv);
 
-	cin >> aux;
 
-	if (aux == 1) {
-		campo_minado_LV1();
-	}
-	else if (aux == 2) {
-		campo_minado_LV2();
-	}
-	else if (aux == 3) {
-		campo_minado_LV3();
-	}
-	
-	return 0;
+    if (dif == 'b') {
+        campo_minado_LV1();
+    }
+    else if (dif == 'i') {
+        campo_minado_LV2();
+    }
+
+    else if (dif == 'a') {
+        campo_minado_LV3();
+    }
+
+    return 0;
 }

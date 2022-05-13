@@ -19,17 +19,17 @@
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="function.cpp">
-      <Filter>Arquivos de Cabeçalho</Filter>
+      <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="function.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
+    <Text Include="dificuldade.txt">
+      <Filter>Arquivos de Origem</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="dificuldade.txt">
-      <Filter>Arquivos de Recurso</Filter>
-    </Text>
+    <ClInclude Include="function.h">
+      <Filter>Arquivos de Origem</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

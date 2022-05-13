@@ -2,8 +2,12 @@
 
 #define FUNCTION_H
 
-#include <iostream>
+#include<iostream>
+#include <cstring>
+#include <fstream>
 #include <string>
+#include <chrono>
+
 #include <Windows.h>
 
 #include <array>
@@ -34,13 +38,13 @@ const int BOMB_IN_GAME = -1;
 
 struct Ponto
 {
-	int pxB = NULL, pyB = NULL, pxU = NULL, pyU = NULL, aux = NULL;
+	int pxB , pyB , pxU , pyU , aux ;
 };
 
 struct Chave
 {
-	bool game_on = NULL, comando = NULL, win = NULL;
-	int cont_band = NULL, cont_celula = NULL, cont_revel = NULL;
+	bool game_on , comando , win ;
+	int cont_band=0 , cont_celula=0, cont_revel=0 ;
 };
 
 template<std::size_t SIZE>
@@ -67,7 +71,7 @@ void gerar_bombas(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const i
 	//geracao aleatoria das bombas
 
 	srand((unsigned)time(NULL));
-	Ponto ponto;
+	Ponto ponto ;
 
 	for (int i = 1; i <= BOMBA; i++) {
 		do {
@@ -410,6 +414,8 @@ bool condicao_termino(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, con
 	}
 
 }
+
+char arc_dificuldade(int& argc, char* argv[]);
 
 void mensagem_final(Chave& game);
 
