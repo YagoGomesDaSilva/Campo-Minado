@@ -2,7 +2,6 @@
 #define FUNCTION_H
 
 #include<iostream>
-
 using std::string;
 using std::cout;
 using std::cin;
@@ -12,11 +11,6 @@ using std::endl;
 
 #include <array>
 using std::array;
-
-using std::string;
-using std::cout;
-using std::cin;
-using std::endl;
 
 const int SIZE_1 = 10;
 const int BOMBA_1 = 10;
@@ -28,7 +22,7 @@ const int SIZE_3L = 15;
 const int SIZE_3C = 30;
 const int BOMBA_3 = 100;
 
-const int BORDA = NULL;
+const int BORDA = 0;
 const int AUX_Z_I = 1000;
 const int BANDEIRA = 500;
 const int BAND_IN_BOMB= -10;

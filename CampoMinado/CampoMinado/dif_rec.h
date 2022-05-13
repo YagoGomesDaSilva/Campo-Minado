@@ -15,6 +15,10 @@ using std::cout;
 using std::cin;
 using std::endl;
 
+struct Record {
+	string nome;
+	int milliseconds;
+};
 
 char arc_dificuldade(int& argc, char* argv[]);
 

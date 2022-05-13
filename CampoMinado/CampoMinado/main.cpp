@@ -8,6 +8,9 @@ int main(int argc, char* argv[]) {
     
     if (dif == 'b') {
         
+        array <Record, 10> rec{};
+        string FILE = "records_LV1.txt";
+
         auto start = steady_clock::now();
         campo_minado_LV1();
         auto end = steady_clock::now();
