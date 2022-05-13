@@ -139,10 +139,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dif_rec.cpp" />
     <ClCompile Include="function.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dif_rec.h" />
     <ClInclude Include="function.h" />
   </ItemGroup>
   <ItemGroup>

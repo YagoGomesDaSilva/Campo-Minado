@@ -6,7 +6,9 @@
 #include <cstring>
 #include <fstream>
 #include <string>
+
 #include <chrono>
+using namespace std::chrono;
 
 #include <Windows.h>
 
