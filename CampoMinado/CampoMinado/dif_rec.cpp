@@ -31,24 +31,6 @@ std::ostream& operator<<(std::ostream& os, vector<Record>& vet) {
 }
 
 
-void read_records(string file_name) {
-
-	std::ifstream record(file_name);
-	
-		if (record.is_open()) {
-			char texto;
-			while (record) {
-				texto = record.get();
-				std::cout << texto;
-			}
-			record.close();
-		}
-		else {
-			std::cout << "Erro";
-		}
-
-}
-
 void write_records(vector<Record>& rec, string& file_name) {
 
 	std::ofstream file;
@@ -63,19 +45,38 @@ void write_records(vector<Record>& rec, string& file_name) {
 	}
 }
 
-void jogo(string FILE, bool campo_minado, Record& player) {
+void read_records(std::vector<Record>& rec,string file_name) {
 
-	vector<Record> rec;
+	std::ifstream record;
+	record.open(file_name.c_str());
+	if (record.is_open()) {
+		rec.clear();
+		int size;
+		record >> size;
+		record.ignore();
+		for (int i = 0; i < size; i++) {
+			Record r;
+			std::getline(record, r.nome);
+			record >> r.milliseconds;
+			record.ignore();
+			rec.push_back(r);
+		}
+		record.close();
+	}
+}
+
+void jogo_1(vector<Record>& rec,string FILE, Record& player) {
+
 
 	auto start = high_resolution_clock::now();
-	bool win = campo_minado;
+	bool win = campo_minado_LV1();
 	auto end = high_resolution_clock::now();
 
 	auto duracao = end - start;
 	cout << endl;
 	cout << duration_cast<milliseconds>(duracao).count();
 
-	if (win == false) {
+	if (win == true) {
 
 		cout << endl;
 		cout << "Digite seu nome: ";
@@ -87,20 +88,84 @@ void jogo(string FILE, bool campo_minado, Record& player) {
 		sort(rec);
 
 		write_records(rec, FILE);
+
+		rec.clear();
 	}
 }
 
-void informacoes() {
+void jogo_2(vector<Record>& rec, string FILE, Record& player) {
 
-	std::ifstream ajuda;
-	ajuda.open("help.txt");
-	std::stringstream mostraLinha;
-	mostraLinha << ajuda.rdbuf();
-	std::string str = mostraLinha.str();
-	std::cout << str << endl;
+
+	auto start = high_resolution_clock::now();
+	bool win = campo_minado_LV2();
+	auto end = high_resolution_clock::now();
+
+	auto duracao = end - start;
+	cout << endl;
+	cout << duration_cast<milliseconds>(duracao).count();
+
+	if (win == true) {
+
+		cout << endl;
+		cout << "Digite seu nome: ";
+		cin >> player.nome;
+		player.milliseconds = duration_cast<milliseconds>(duracao).count();
+
+		rec.push_back({ player.nome, player.milliseconds });
+
+		sort(rec);
+
+		write_records(rec, FILE);
+
+		rec.clear();
+	}
 }
 
-char arc_dificuldade(int& argc, char* argv[]) {
+void jogo_3(vector<Record>& rec, string FILE, Record& player) {
+
+
+	auto start = high_resolution_clock::now();
+	bool win = campo_minado_LV3();
+	auto end = high_resolution_clock::now();
+
+	auto duracao = end - start;
+	cout << endl;
+	cout << duration_cast<milliseconds>(duracao).count();
+
+	if (win == true) {
+
+		cout << endl;
+		cout << "Digite seu nome: ";
+		cin >> player.nome;
+		player.milliseconds = duration_cast<milliseconds>(duracao).count();
+
+		rec.push_back({ player.nome, player.milliseconds });
+
+		sort(rec);
+
+		write_records(rec, FILE);
+
+		rec.clear();
+	}
+}
+
+
+void informacoes() {
+	string line;
+	std::ifstream ajuda;
+	ajuda.open("help.txt");
+
+	if (ajuda.is_open()) {
+		while (getline(ajuda, line, '\n')) {
+			cout << line << '\n';
+		}
+	}
+	else {
+		cout << "ERRO. \n";
+	}
+}
+
+char arc_dificuldade(vector<Record>& rec, int& argc, char* argv[]) {
 
 	std::ifstream dificuldade{};
 	dificuldade.open("dificuldade.txt", std::ios::app);
@@ -128,15 +193,18 @@ char arc_dificuldade(int& argc, char* argv[]) {
 		else if (strcmp(argv[i], "-r") == 0) {
 
 			if (dif == 'b') {
-				read_records("records_LV1.txt");
+				string FILE = "records_LV1.txt";
+				read_records(rec, FILE);
 			}
 
 			else if (dif == 'i') {
-				read_records("records_LV2.txt");
+				string FILE = "records_LV2.txt";
+				read_records(rec, FILE);
 			}
 
 			else if (dif == 'a') {
-				read_records("records_LV3.txt");
+				string FILE = "records_LV3.txt";
+				read_records(rec, FILE);
 			}
 
 

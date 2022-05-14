@@ -1,9 +1,17 @@
 ﻿  dif_rec.cpp
-D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\dif_rec.cpp(83,67): warning C4244: '=': conversão de '_Rep' para 'int', possível perda de dados
+D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\dif_rec.cpp(84,67): warning C4244: '=': conversão de '_Rep' para 'int', possível perda de dados
           with
           [
               _Rep=__int64
           ]
-  main.cpp
-  Gerando Código...
+D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\dif_rec.cpp(112,67): warning C4244: '=': conversão de '_Rep' para 'int', possível perda de dados
+          with
+          [
+              _Rep=__int64
+          ]
+D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\dif_rec.cpp(140,67): warning C4244: '=': conversão de '_Rep' para 'int', possível perda de dados
+          with
+          [
+              _Rep=__int64
+          ]
   CampoMinado.vcxproj -> D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\x64\Debug\CampoMinado.exe

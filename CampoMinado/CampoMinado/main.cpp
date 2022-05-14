@@ -1,27 +1,26 @@
 #include "function.h"
 #include "dif_rec.h"
-/*
-criar uma variavel tempo passando por referencia para dentro da função campo_minado, e diminuir no final da execução
-*/
+
 
 int main(int argc, char* argv[]) {
 
     Record player;
-    char dif = arc_dificuldade(argc, argv);
+    vector<Record> rec ;
+
+    char dif = arc_dificuldade(rec, argc, argv);
 
     void informacoes();
-
    
     if (dif == 'b') {
-        jogo("records_LV1.txt", campo_minado_LV1(), player);
+        jogo_1(rec,"records_LV1.txt", player);
     }
 
     else if (dif == 'i') {
-        jogo("records_LV2.txt", campo_minado_LV2(), player);
+        jogo_2(rec, "records_LV2.txt", player);
     }
 
     else if (dif == 'a') {
-        jogo("records_LV3.txt", campo_minado_LV3(), player);
+        jogo_3(rec, "records_LV3.txt", player);
     }
 
     return 0;
