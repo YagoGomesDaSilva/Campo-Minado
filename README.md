@@ -6,9 +6,10 @@ Projeto para disciplina de Linguagem de Programação 1 IMD0030 2022.1
 
 O trabalho é em dupla (não pode ser individual) e pode ser submetido via SIGAA (arquivo compactado com todo o código-fonte) ou via GitHub Classroom.
 
-Integrante 1: Nome Matrícula:
+Niquele Poliane Cruz Barbosa, 20210058960
 
-Integrante 2: Nome Matrícula:
+Yago Gomes da Silva, 20210057846
+
 
 ## O Jogo
 
