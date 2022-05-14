@@ -149,7 +149,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="dificuldade.txt" />
+    <Text Include="help.txt" />
     <Text Include="records_LV1.txt" />
+    <Text Include="records_LV2.txt" />
+    <Text Include="records_LV3.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

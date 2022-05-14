@@ -1,7 +1,9 @@
-﻿  function.cpp
+﻿  dif_rec.cpp
+D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\dif_rec.cpp(83,67): warning C4244: '=': conversão de '_Rep' para 'int', possível perda de dados
+          with
+          [
+              _Rep=__int64
+          ]
   main.cpp
   Gerando Código...
-D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\function.h(409): warning C4715: 'condicao_termino<31>': nem todos os caminhos de controle retornam um valor
-D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\function.h(409): warning C4715: 'condicao_termino<16>': nem todos os caminhos de controle retornam um valor
-D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\CampoMinado\function.h(409): warning C4715: 'condicao_termino<11>': nem todos os caminhos de controle retornam um valor
   CampoMinado.vcxproj -> D:\GOD Programation\BTI\Semestre 3\Linguagem de Programação 1\AtividadesC++\projeto-1---campo-minado-yago-e-niquele\CampoMinado\x64\Debug\CampoMinado.exe

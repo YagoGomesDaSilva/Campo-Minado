@@ -1,0 +1,24 @@
+BEM VINDO AO CAMPO MINADO
+*-*-*-*-*-*-*-*-*-*-*-*-*
+
+-h para Informações 
+-r para Imprimir records (Imprime somente do nível selecionado) 
+-d Mudar a dificuldade 
+
+*-*-*-*-*-*-*
+Sobre o Jogo
+*-*-*-*-*-*-*
+1º Seu primeiro clique abrirá uma região do tabuleiro, se uma mina for revelada você perde.
+2º Um número indica a quantidade de minas ao redor do próprio número.
+3º Você vence se revelar todas as células que não contêm minas.
+4º Ao inserir a bandeira você presume que o local tem uma bomba.
+5º Se a quantidade de bandeiras marcadas for igual ao número, ao selecionar o número são reveladas as casas ao redor.
+
+*-*-*-*-*-*-*
+Como Jogar
+*-*-*-*-*-*-*
+Manipular Bandeira = 1
+Revelar Unidade = 0
+Insira a Linha.
+Insira a Coluna.
+

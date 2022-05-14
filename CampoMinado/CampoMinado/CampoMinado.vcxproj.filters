@@ -40,5 +40,14 @@
     <Text Include="records_LV1.txt">
       <Filter>Arquivos de Recurso</Filter>
     </Text>
+    <Text Include="records_LV2.txt">
+      <Filter>Arquivos de Recurso</Filter>
+    </Text>
+    <Text Include="records_LV3.txt">
+      <Filter>Arquivos de Recurso</Filter>
+    </Text>
+    <Text Include="help.txt">
+      <Filter>Arquivos de Recurso</Filter>
+    </Text>
   </ItemGroup>
 </Project>

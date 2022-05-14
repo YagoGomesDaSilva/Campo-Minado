@@ -64,7 +64,7 @@ void gerar_bombas(array <array<int, SIZE>, SIZE>& arr, const int SIZE_L, const i
 	//geracao aleatoria das bombas
 
 	srand((unsigned)time(NULL));
-	Ponto ponto ;
+	Ponto ponto;
 
 	for (int i = 1; i <= BOMBA; i++) {
 		do {
