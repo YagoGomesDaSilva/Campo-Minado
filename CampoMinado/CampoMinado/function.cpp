@@ -17,10 +17,14 @@ bool campo_minado_LV1() {
 	game.game_on = true;
 	do {
 
-
+		/*
+		int aux = 0;
 		for (int i = 1; i <= SIZE_1; i++) {
 			for (int j = 1; j <= SIZE_1; j++) {
 				cout << arr[i][j] << " ";
+				if (arr[i][j] == -1) {
+					aux++;
+				}
 			}
 			cout << endl;
 		}
@@ -32,7 +36,9 @@ bool campo_minado_LV1() {
 		cout << endl;
 		cout << game.cont_revel;
 		cout << endl;
-
+		cout << aux;
+		cout << endl;
+		*/
 
 		gerar_campo(arr, SIZE_1, SIZE_1, ponto);
 

@@ -73,8 +73,9 @@ void jogo_1(vector<Record>& rec,string FILE, Record& player) {
 	auto end = high_resolution_clock::now();
 
 	auto duracao = end - start;
-	cout << endl;
-	cout << duration_cast<milliseconds>(duracao).count();
+
+	//cout << endl;
+	//cout << duration_cast<milliseconds>(duracao).count();
 
 	if (win == true) {
 
