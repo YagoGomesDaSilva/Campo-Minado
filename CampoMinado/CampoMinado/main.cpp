@@ -2,15 +2,16 @@
 #include "dif_rec.h"
 
 
+
 int main(int argc, char* argv[]) {
+
+    informacoes();
 
     Record player;
     vector<Record> rec ;
 
     char dif = arc_dificuldade(rec, argc, argv);
 
-    void informacoes();
-   
     if (dif == 'b') {
         jogo_1(rec,"records_LV1.txt", player);
     }

@@ -152,18 +152,31 @@ void jogo_3(vector<Record>& rec, string FILE, Record& player) {
 
 
 void informacoes() {
-	string line;
-	std::ifstream ajuda;
-	ajuda.open("help.txt");
-
-	if (ajuda.is_open()) {
-		while (getline(ajuda, line, '\n')) {
-			cout << line << '\n';
-		}
-	}
-	else {
-		cout << "ERRO. \n";
-	}
+	cout << "            BEM VINDO AO CAMPO MINADO                 " << endl;
+	cout << "            *-*-*-*-*-*-*-*-*-*-*-*-*                 " << endl;
+	cout << "       -h para Informações         " << endl;
+	cout << "       -r para Imprimir records (Imprime somente do nível selecionado)         " << endl;
+	cout << "       -d Mudar a dificuldade         " << endl;
+	cout << "                                                       " << endl;
+	cout << "                 *-*-*-*-*-*-*-*          " << endl;
+	cout << "                  Sobre o Jogo           " << endl;
+	cout << "                 *-*-*-*-*-*-*-*         " << endl;
+	cout << "     1º Se uma mina for revelada: Você perde.     " << endl;
+	cout << "     2º Um número indica a quantidade de minas ao redor do próprio número.   " << endl;
+	cout << "     3º Você vence se revelar todas as células que não contêm minas.       " << endl;
+	cout << "     4º Ao inserir a bandeira você presume que o local tem uma bomba.        " << endl;
+	cout << "     5º Se a quantidade de bandeiras marcadas for igual ao número, ao selecionar o número são reveladas as casas ao redor.        " << endl;
+	cout << "                                                        " << endl;
+	cout << "                 *-*-*-*-*-*-*    " << endl;
+	cout << "                  Como Jogar   " << endl;
+	cout << "                 *-*-*-*-*-*-* " << endl;
+	cout << "                                                       " << endl;
+	cout << "            Manipular Bandeira = 1 " << endl;
+	cout << "            Revelar Unidade = 0      " << endl;
+	cout << "            Insira a Linha.   " << endl;
+	cout << "            Insira a Coluna.   " << endl;
+	cout << endl;
+	cout << endl;
 }
 
 char arc_dificuldade(vector<Record>& rec, int& argc, char* argv[]) {
@@ -177,7 +190,7 @@ char arc_dificuldade(vector<Record>& rec, int& argc, char* argv[]) {
 	for (int i = 0; i < argc; i++) {
 
 		if (strcmp(argv[i], "-h") == 0) {
-			void informacoes();
+			informacoes();
 		}
 
 		else if (strcmp(argv[i], "-d") == 0) {
