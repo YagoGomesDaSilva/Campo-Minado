@@ -2,15 +2,6 @@
 
 Projeto para disciplina de Linguagem de Programação 1 IMD0030 2022.1
 
-## Instruções
-
-O trabalho é em dupla (não pode ser individual) e pode ser submetido via SIGAA (arquivo compactado com todo o código-fonte) ou via GitHub Classroom.
-
-Niquele Poliane Cruz Barbosa, 20210058960
-
-Yago Gomes da Silva, 20210057846
-
-
 ## O Jogo
 
 O jogo consiste em uma área matricial de `n` linhas por `m` colunas com um total de `n * m` células e `k` minas. Inicialmente, as células estão ocultas, ou seja, não é possível determinar se ela possui uma mina ou não, e o objetivo do jogo é revelar todas as células que não possuem minas. Assim, uma célula pode ser revelada por uma ação do usuário ou por uma das regras do jogo e isso pode resultar em uma das três situações possíveis:
